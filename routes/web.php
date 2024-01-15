@@ -35,7 +35,7 @@ Route::name('user.')->group(function (){
         return view('login');
     })->name('login');
 
-    Route::post('/logout',[UserController::class, 'logout'])->name('logout');
+    Route::get('/logout',[UserController::class, 'logout'])->name('logout');
     Route::post('/login',[UserController::class, 'login']);
     Route::post('/registration',[UserController::class, 'registration']);
 });

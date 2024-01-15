@@ -10,7 +10,7 @@
 <body>
     @csrf
     <h1>Private</h1>
-    <form method="post" action={{route('user.logout')}}>
+    <form method="get" action={{route('user.logout')}}>
         <button name="logout">Exit</button>
     </form>
 </body>
