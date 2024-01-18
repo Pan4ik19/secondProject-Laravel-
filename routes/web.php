@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EntryContoller;
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 use \Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
@@ -15,32 +18,29 @@ use App\Http\Controllers\UserController;
 */
 
 Route::name('user.')->group(function (){
-//    $views = ['/'=>'private',
-//              '/login'=>'login',
-//              '/registration'=>'registration'];
-
-    Route::view('/', 'private')->middleware('auth')->name('private');
-
-    Route::get('/registration',function (){
-        if(Auth::check()){
-            return redirect(view('/'));
-        }
-        return view('registration');
-    })->name('registration');
-
-    Route::get('/login',function (){
-        if(Auth::check()){
-            return redirect(view('/'));
-        }
-        return view('login');
-    })->name('login');
-
+    Route::get('/registration',[UserController::class,'getRegistration'])->name('registration');
+    Route::get('/login',[UserController::class,'getLogin'])->name('login');
     Route::get('/logout',[UserController::class, 'logout'])->name('logout');
     Route::post('/login',[UserController::class, 'login']);
     Route::post('/registration',[UserController::class, 'registration']);
 });
 
+Route::name('main.')->group(function (){
+    Route::get('/',[MainController::class,'index'])->name('main');
+    Route::post('/addCategory',[CategoryController::class,'addCategory'])->name('addCategory');
+    Route::post('/addEntry',[EntryContoller::class,'addEntry'])->name('addEntry');
+});
+
+Route::name('vue.')->group(function (){
+    Route::get('/categories',[CategoryController::class,'getCategories']);
+    Route::get('/entries',[EntryContoller::class,'getEntries']);
+    Route::get('/getAuthUser',[MainController::class,'getAuthUser']);
+    Route::get('/updateEntry',[EntryContoller::class, 'updateEntry']);
+});
 
 
 
 
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

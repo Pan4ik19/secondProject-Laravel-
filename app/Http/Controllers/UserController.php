@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\LoginPostRequest;
+use App\Http\Requests\RegistrationPostRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -10,35 +12,25 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function registration(Request $request)
+    public function registration(RegistrationPostRequest $request)
     {
         if(Auth::check()){
-            return redirect(route('user.private'));
+            return redirect(route('main.main'));
         }
-        $validateFields = $request->validate([
-            'name' => 'required',
-            'secondName' => 'required',
-            'email' => 'required | email',
-            'password' => 'required'
-        ]);
-
-        $user = new User;
-        $user->name = $validateFields['name'];
-        $user->second_name = $validateFields['secondName'];
-        $user->email = $validateFields['email'];
-        $user->password = $validateFields['password'];
+        $validateFields = $request->validated();
+        $user = User::create($validateFields);
         $user->save();
-        return redirect(route('user.private'));
+        return redirect(route('main.main'));
     }
 
-    public function login(Request $request)
+    public function login(LoginPostRequest $request)
     {
         if (Auth::check()){
-            return redirect(route('user.private'));
+            return redirect(route('main.main'));
         }
-        $formFields = $request->only('email','password');
+        $formFields = $request->validated();
         if(Auth::attempt($formFields)){
-            return redirect(route('user.private'));
+            return redirect(route('main.main'));
         }else{
             return redirect(route('user.login'))->withErrors([
                 'email'=>'User is not found!'
@@ -50,5 +42,14 @@ class UserController extends Controller
     {
         Auth::logout();
         return redirect(route('user.login'));
+    }
+
+    public function getRegistration()
+    {
+        return Auth::check() ? redirect(view('/')) : view('registration');
+    }
+    public function getLogin()
+    {
+        return Auth::check() ? redirect(view('/')) : view('login');
     }
 }

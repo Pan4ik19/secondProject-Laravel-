@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{csrf_token()}}">
-    <link href="./../css/registration.css" rel="stylesheet">
     <title>Simple Registration Form</title>
 </head>
 <body>
@@ -20,7 +19,7 @@
         <input type="text" placeholder="Enter name" name="name" id="name" required>
 
         <label for="secondName"><b>Second Name</b></label>
-        <input type="text" placeholder="Enter Second Name" name="secondName" id="secondName" required>
+        <input type="text" placeholder="Enter Second Name" name="second_name" id="secondName" required>
 
         <label for="email"><b>Email</b></label>
         <input type="text" placeholder="Enter Email" name="email" id="email" required>
@@ -45,9 +44,7 @@
 
 <style>
     {box-sizing: border-box}
-
-    /* Add padding to containers */
-    .container {
+    {
         padding: 16px;
     }
 
