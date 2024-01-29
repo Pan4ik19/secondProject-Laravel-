@@ -22,10 +22,12 @@ class EntryContoller extends Controller
         return Entry::all()->where('user_id', Auth::id());
     }
 
-    public function updateEntry(Request $request)
+    public function __invoke(EntryContoller $request, Entry $entry)
     {
-        $entry = new Entry();
-        $entry->update($request->all());
+        $data = $request->validate();
+        $entry->update($data);
         return $entry;
     }
+
+    
 }
